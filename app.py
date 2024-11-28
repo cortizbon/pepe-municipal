@@ -39,7 +39,7 @@ with tab1:
         deptos = datos['Departamento'].unique().tolist()
         depto = st.selectbox("Seleccione el departamento", deptos)
         filtro_depto = datos[datos['Departamento'] == depto]
-        entidades = datos['Entidad'].unique().tolist()
+        entidades = filtro_depto['Entidad'].unique().tolist()
         entidad = st.selectbox("Seleccione la entidad", entidades)
         filtro_entidad = filtro_depto[filtro_depto['Entidad'] == entidad]
         
