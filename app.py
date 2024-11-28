@@ -152,7 +152,7 @@ with tab2:
         depto = st.selectbox("Seleccione el departamento", deptos, key=10)
         filtro_depto = datos[datos['Departamento'] == depto]
         years = filtro_depto['Año'].unique().tolist()
-        year = st.selectbox("Seleccione la entidad", years, key=11)
+        year = st.selectbox("Seleccione el año", years, key=11)
         filtro_year = filtro_depto[filtro_depto['Año'] == year]
         tipo = st.selectbox("Seleccione entre ingresos y gastos", ['Ingresos', 'Gastos'])
 
@@ -187,7 +187,7 @@ with tab3:
     entidad = st.selectbox("Seleccione la entidad", entidades)
     filtro_entidad = filtro_depto[filtro_depto['Entidad'] == entidad]
     years = filtro_entidad['Año'].unique().tolist()
-    year = st.selectbox("Seleccione la entidad", years, key=21)
+    year = st.selectbox("Seleccione el año", years, key=21)
     filtro_year = filtro_entidad[filtro_entidad['Año'] == year]
 
     tab1, tab2 = st.tabs(['Ingreso', 'Gasto'])
