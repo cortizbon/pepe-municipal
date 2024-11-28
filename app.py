@@ -51,8 +51,7 @@ with tab1:
                     .groupby('Año')['Dato Numérico']
                     .sum()
                     .reset_index())
-        tasa_gen_cagr = (piv_2024[piv_2024['Año'] == 2022]['Dato Numérico'].reset_index(drop=True)/ piv_2024[piv_2024['Año'] == 2000]['Dato Numérico'].reset_index(drop=True))[0] ** (1/(2022 - 2000)) - 1        
-        piv_2024['CAGR'] = tasa_gen_cagr
+
         piv_corr = filtro_ingresos.groupby('Año')['Dato Numérico'].sum().reset_index()
 
         #piv_2024['Apropiación a precios constantes (2024)'] /= 1000
@@ -102,8 +101,7 @@ with tab1:
                     .groupby('Año')['Dato Numérico']
                     .sum()
                     .reset_index())
-        tasa_gen_cagr = (piv_2024[piv_2024['Año'] == 2022]['Dato Numérico'].reset_index(drop=True)/ piv_2024[piv_2024['Año'] == 2000]['Dato Numérico'].reset_index(drop=True))[0] ** (1/(2022 - 2000)) - 1        
-        piv_2024['CAGR'] = tasa_gen_cagr
+
         piv_corr = filtro_gastos.groupby('Año')['Dato Numérico'].sum().reset_index()
 
         #piv_2024['Apropiación a precios constantes (2024)'] /= 1000
