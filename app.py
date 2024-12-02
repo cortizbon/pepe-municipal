@@ -182,7 +182,7 @@ with tab3:
     filtro_depto = datos[datos['Departamento'] == depto]
 
     entidades = filtro_depto['Entidad'].unique().tolist()
-    entidad = st.selectbox("Seleccione la entidad", entidades)
+    entidad = st.selectbox("Seleccione la entidad", entidades, key=3454)
     filtro_entidad = filtro_depto[filtro_depto['Entidad'] == entidad]
     years = filtro_entidad['Año'].unique().tolist()
     year = st.selectbox("Seleccione el año", years, key=214)
