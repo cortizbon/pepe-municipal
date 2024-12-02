@@ -92,7 +92,7 @@ with tab1:
         x=1), title='Histórico general <br><sup>Cifras en millones de pesos</sup>', yaxis_tickformat='.0f')
 
 
-        st.plotly_chart(fig, key=1)
+        st.plotly_chart(fig, key=17)
 
         st.header("Gastos")
 
@@ -142,25 +142,25 @@ with tab1:
         x=1), title='Histórico general <br><sup>Cifras en millones de pesos</sup>', yaxis_tickformat='.0f')
 
 
-        st.plotly_chart(fig, key=2)
+        st.plotly_chart(fig, key=27)
 
 
 with tab2:
         deptos = datos['Departamento'].unique().tolist()
-        depto = st.selectbox("Seleccione el departamento", deptos, key=10)
+        depto = st.selectbox("Seleccione el departamento", deptos, key=109)
         filtro_depto = datos[datos['Departamento'] == depto]
         years = filtro_depto['Año'].unique().tolist()
-        year = st.selectbox("Seleccione el año", years, key=11)
+        year = st.selectbox("Seleccione el año", years, key=119)
         filtro_year = filtro_depto[filtro_depto['Año'] == year]
         tipo = st.selectbox("Seleccione entre ingresos y gastos", ['Ingresos', 'Gastos'])
 
         if tipo == 'Ingresos':
             filtro_tipo = filtro_year[filtro_year['Indicador'].isin(ingresos_ind)]
-            tipo_ingreso = st.selectbox("Seleccione un tipo de ingreso", ingresos_ind, key=14)
+            tipo_ingreso = st.selectbox("Seleccione un tipo de ingreso", ingresos_ind, key=141)
             filtro_tipo = filtro_tipo[filtro_tipo['Indicador'] == tipo_ingreso]
         else:
             filtro_tipo = filtro_year[filtro_year['Indicador'].isin(gastos_ind)]
-            tipo_gasto = st.selectbox("Seleccione un tipo de ingreso", gastos_ind, key=19)
+            tipo_gasto = st.selectbox("Seleccione un tipo de ingreso", gastos_ind, key=198)
             filtro_tipo = filtro_tipo[filtro_tipo['Indicador'] == tipo_gasto]
               
         
@@ -178,14 +178,14 @@ with tab2:
       
 with tab3:
     deptos = datos['Departamento'].unique().tolist()
-    depto = st.selectbox("Seleccione el departamento", deptos, key=20)
+    depto = st.selectbox("Seleccione el departamento", deptos, key=201)
     filtro_depto = datos[datos['Departamento'] == depto]
 
     entidades = filtro_depto['Entidad'].unique().tolist()
     entidad = st.selectbox("Seleccione la entidad", entidades)
     filtro_entidad = filtro_depto[filtro_depto['Entidad'] == entidad]
     years = filtro_entidad['Año'].unique().tolist()
-    year = st.selectbox("Seleccione el año", years, key=21)
+    year = st.selectbox("Seleccione el año", years, key=214)
     filtro_year = filtro_entidad[filtro_entidad['Año'] == year]
 
     tab1, tab2 = st.tabs(['Ingreso', 'Gasto'])
