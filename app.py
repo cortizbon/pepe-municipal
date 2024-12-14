@@ -13,7 +13,7 @@ DIC_COLORES = {'verde':["#009966"],
                'ofiscal': ["#F9F9F9", "#2635bf"]}
 st.set_page_config(layout='wide')
 
-datos = pd.read_csv('datasets/finanzas_territorio.csv')
+datos = pd.read_csv('datasets/finanzas_territoriales.csv')
 mapa = gpd.read_parquet('datasets/muns.parquet')
 mapa.columns = ['Código Entidad', 'geometry']
 mapa['Código Entidad'] = mapa['Código Entidad'].astype(int)
@@ -44,15 +44,15 @@ with tab1:
         filtro_entidad = filtro_depto[filtro_depto['Entidad'] == entidad]
         
         st.header("Ingresos")
-        filtro_ingresos = filtro_entidad[filtro_entidad['Indicador'].isin(ingresos_ind)]
+        filtro_ingresos = filtro_entidad[filtro_entidad['tipo_item'] == 'Ingresos']
 
 
         piv_2024 = (filtro_ingresos
-                    .groupby('Año')['Dato Numérico']
+                    .groupby('Año')['Valor_24']
                     .sum()
                     .reset_index())
 
-        piv_corr = filtro_ingresos.groupby('Año')['Dato Numérico'].sum().reset_index()
+        piv_corr = filtro_ingresos.groupby('Año')['Valor_24'].sum().reset_index()
 
         #piv_2024['Apropiación a precios constantes (2024)'] /= 1000
 
@@ -60,19 +60,19 @@ with tab1:
         
         fig.add_trace(
             go.Line(
-                x=piv_2024['Año'], y=piv_2024['Dato Numérico'], 
-                name='Dato Numérico', line=dict(color=DIC_COLORES['ax_viol'][1])
+                x=piv_2024['Año'], y=piv_2024['Valor_24'], 
+                name='Valor_24', line=dict(color=DIC_COLORES['ax_viol'][1])
             ),
             row=1, col=1
         )
 
         piv_tipo_gasto = (filtro_ingresos
-                        .groupby(['Año', 'Indicador'])['Dato Numérico']
+                        .groupby(['Año', 'Indicador'])['Valor_24']
                         .sum()
                         .reset_index())
-        piv_tipo_gasto['total'] = piv_tipo_gasto.groupby(['Año'])['Dato Numérico'].transform('sum')
+        piv_tipo_gasto['total'] = piv_tipo_gasto.groupby(['Año'])['Valor_24'].transform('sum')
 
-        piv_tipo_gasto['%'] = ((piv_tipo_gasto['Dato Numérico'] / piv_tipo_gasto['total']) * 100).round(2)
+        piv_tipo_gasto['%'] = ((piv_tipo_gasto['Valor_24'] / piv_tipo_gasto['total']) * 100).round(2)
 
 
 
@@ -96,13 +96,13 @@ with tab1:
 
         st.header("Gastos")
 
-        filtro_gastos = filtro_entidad[filtro_entidad['Indicador'].isin(gastos_ind)]
+        filtro_gastos = filtro_entidad[filtro_entidad['tipo_item'] == 'Gastos']
         piv_2024 = (filtro_gastos
-                    .groupby('Año')['Dato Numérico']
+                    .groupby('Año')['Valor_24']
                     .sum()
                     .reset_index())
 
-        piv_corr = filtro_gastos.groupby('Año')['Dato Numérico'].sum().reset_index()
+        piv_corr = filtro_gastos.groupby('Año')['Valor_24'].sum().reset_index()
 
         #piv_2024['Apropiación a precios constantes (2024)'] /= 1000
 
@@ -110,19 +110,19 @@ with tab1:
         
         fig.add_trace(
             go.Line(
-                x=piv_2024['Año'], y=piv_2024['Dato Numérico'], 
-                name='Dato Numérico', line=dict(color=DIC_COLORES['ax_viol'][1])
+                x=piv_2024['Año'], y=piv_2024['Valor_24'], 
+                name='Valor_24', line=dict(color=DIC_COLORES['ax_viol'][1])
             ),
             row=1, col=1
         )
 
         piv_tipo_gasto = (filtro_gastos
-                        .groupby(['Año', 'Indicador'])['Dato Numérico']
+                        .groupby(['Año', 'Indicador'])['Valor_24']
                         .sum()
                         .reset_index())
-        piv_tipo_gasto['total'] = piv_tipo_gasto.groupby(['Año'])['Dato Numérico'].transform('sum')
+        piv_tipo_gasto['total'] = piv_tipo_gasto.groupby(['Año'])['Valor_24'].transform('sum')
 
-        piv_tipo_gasto['%'] = ((piv_tipo_gasto['Dato Numérico'] / piv_tipo_gasto['total']) * 100).round(2)
+        piv_tipo_gasto['%'] = ((piv_tipo_gasto['Valor_24'] / piv_tipo_gasto['total']) * 100).round(2)
 
 
 
@@ -164,14 +164,14 @@ with tab2:
             filtro_tipo = filtro_tipo[filtro_tipo['Indicador'] == tipo_gasto]
               
         
-        filtro_datos = filtro_tipo[['Código Entidad', 'Dato Numérico']]
+        filtro_datos = filtro_tipo[['Código Entidad', 'Valor_24']]
 
 
         merge = filtro_datos.merge(mapa, how='left')
         fig, ax = plt.subplots(1, 1, figsize=(10, 16))
         ax.set_axis_off()
         merge = gpd.GeoDataFrame(merge)
-        merge.plot(column='Dato Numérico', ax=ax)
+        merge.plot(column='Valor_24', ax=ax)
 
         st.pyplot(fig)
       
@@ -195,7 +195,7 @@ with tab3:
 
         fig = px.treemap(filtro_tipo, 
                         path=[px.Constant('Ingreso'), 'Indicador'],
-                        values='Dato Numérico',
+                        values='Valor_24',
                         color_discrete_sequence=[DIC_COLORES['ax_viol'][1],
                                                  DIC_COLORES['ro_am_na'][3],
                                                  DIC_COLORES['az_verd'][2],
@@ -211,7 +211,7 @@ with tab3:
 
         fig = px.treemap(filtro_tipo, 
                         path=[px.Constant('Gasto'), 'Indicador'],
-                        values='Dato Numérico',
+                        values='Valor_24',
                         color_discrete_sequence=[DIC_COLORES['ax_viol'][1],
                                                  DIC_COLORES['ro_am_na'][3],
                                                  DIC_COLORES['az_verd'][2]],
